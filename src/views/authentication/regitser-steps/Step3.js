@@ -90,6 +90,8 @@ const Step3 = () => {
   function paymentSuccess() {
     Swal.fire({
       icon: "success",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
       title: "Your Payment Was Successfull",
       text: "Thank you for your payment. You should recieve a confirmation Email with more details shortly",
       showConfirmButton: true,

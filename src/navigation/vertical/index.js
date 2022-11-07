@@ -19,4 +19,10 @@ export default [
     icon: <User size={20} />,
     navLink: '/calendar'
   },
+  {
+    id: 'favourite-meals',
+    title: 'Favourite Meals',
+    icon: <User size={20} />,
+    navLink: '/favourite-meals'
+  },
 ]

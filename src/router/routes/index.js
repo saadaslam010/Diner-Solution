@@ -5,6 +5,7 @@ const TemplateTitle = 'React Base Project'
 
 import { AppRoutes } from './app'
 import { AuthenticationRoutes } from './authentication'
+import { DinnerSolutionRoutes } from './dinner-solution'
 //All Routes
 import { ThemeRoutes } from './theme'
 
@@ -15,7 +16,8 @@ const DefaultRoute = '/home'
 const Routes = [
     ...ThemeRoutes,
     ...AuthenticationRoutes,
-    ...AppRoutes
+    ...AppRoutes,
+    ...DinnerSolutionRoutes
 ]
 
 export { DefaultRoute, TemplateTitle, Routes }
