@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Fragment } from "react";
 import DataTable from "react-data-table-component";
-import { Globe, Plus, Check, X } from "react-feather";
+import { Globe, Plus, Check, X, MoreVertical, Archive, Trash2, FileText, Edit, Calendar } from "react-feather";
 import CustomDataTable from "@customComponents/CustomDataTable"
 import Avatar from "@components/avatar";
 import {
@@ -16,93 +16,117 @@ import {
   Badge,
   Label,
   UncontrolledTooltip,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
   Input,
   Spinner
 } from "reactstrap";
 import { apiUrls } from "../../../constants/index";
+import AddEditModal from "./AddEditModal";
 
 const Listing = () => {
 
     const [apiData, setApiData] = useState([])
-    const [data, setData] = useState([])
+    const [addEditModal, setAddEditModal] = useState(false)
+    const [data, setData] = useState([
+      {
+        menuName: "Apprioct Chicken & Rice",
+        mainDish: "Approcot Chicken",
+        side1: "Steamed Chicken",
+        side2: "",
+        side3: "Rice",
+        side4: "",
+        dessert: "Ice Cream"
+      }
+    ])
     const [columns, setColumns] = useState([
         {
-            name: "ID",
-            maxWidth: "20px",
-            selector: (row) => row.id,
+            name: "Menu Name",
+            minWidth: "200px",
+            selector: (row) => row.menuName,
         },
         {
-          name: "Name",
-          minWidth: "250px",
-          cell: (row) => (
-            <div className="d-flex align-items-center">
-              <Avatar img={row.image} />
-              <div className="user-info text-truncate ms-1 cursor-pointer">
-                <span className="d-block fw-bold text-truncate text-primary">
-                  {row.name}
-                </span>
-              </div>
-            </div>
-          ),
+          name: "Main Dish",
+          minWidth: "200px",
+          selector: (row) => row.mainDish
         },
         {
-          name: "Species",
-          minWidth: "250px",
-          selector: (row) => row.species,
+          name: "Side Dish 1",
+          minWidth: "200px",
+          selector: (row) => row.side1,
         },
         {
-          name: "Gender",
-          minWidth: "300px",
-          selector: (row) => row.gender,
+          name: "Side Dish 2",
+          minWidth: "200px",
+          selector: (row) => row.side2,
         },
         {
-          name: "Status",
-          minWidth: "150px",
+          name: "Side Dish 3",
+          minWidth: "200px",
+          selector: (row) => row.side3,
+        },
+        {
+          name: "Side Dish 4",
+          minWidth: "200px",
+          selector: (row) => row.side4,
+        },
+        {
+          name: "Dessert",
+          minWidth: "200px",
+          selector: (row) => row.dessert,
+        },
+        {
+          name: "Actions",
+          minWidth: "200px",
           cell: (row) => {
-            return (
-              <div className="form-switch form-check-primary">
-                <Input
-                  key={row.id}
-                  type="switch"
-                  checked={row.status == "Alive" ? true : false}
-                  id={`icon-primary-${row.id}`}
-                  name={`icon-primary-${row.id}`}
-                />
-                <Label
-                  className="form-check-label"
-                  htmlFor={`icon-primary-${row.id}`}
-                >
-                  <span className="switch-icon-left">
-                    <Check size={14} />
-                  </span>
-                  <span className="switch-icon-right">
-                    <X size={14} />
-                  </span>
-                </Label>
-              </div>
-            );
-          },
+            return(
+            <div className='column-action'>
+              <UncontrolledDropdown>
+                <DropdownToggle tag='div' className='btn btn-sm'>
+                  <MoreVertical size={14} className='cursor-pointer' />
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem
+                    className='w-100'
+                    onClick={() => {
+
+                    }}
+                  >
+                    <Edit size={14} className='me-50' />
+                    <span className='align-middle'>View Edit Menu</span>
+                  </DropdownItem>
+                  <DropdownItem tag='a' href='/' className='w-100' onClick={e => e.preventDefault()}>
+                    <Calendar size={14} className='me-50' />
+                    <span className='align-middle'>Add To Calendar</span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </div>
+            )
+          }
         }
       ])
 
     //Setting Data In Table After Api Response
-    useEffect(()=> {
-    if(apiData.length > 0){
-        const temp = []
-        apiData.map((one) => {
-            const element = {
-                id: one.id,
-                name: one.name,
-                species: one.species,
-                gender: one.gender,
-                image: one.image,
-                status: one.status
-            }
-            temp.push(element)
-        })
-        setData(temp)
-    }
-    }, [apiData])
+    // useEffect(()=> {
+    // if(apiData.length > 0){
+    //     const temp = []
+    //     apiData.map((one) => {
+    //         const element = {
+    //             id: one.id,
+    //             name: one.name,
+    //             species: one.species,
+    //             gender: one.gender,
+    //             image: one.image,
+    //             status: one.status
+    //         }
+    //         temp.push(element)
+    //     })
+    //     setData(temp)
+    // }
+    // }, [apiData])
 
     
 
@@ -114,8 +138,8 @@ const Listing = () => {
             <CardHeader className="flex-md-row py-1 flex-column align-md-items-center align-items-center border-bottom">
               <CardTitle>
                 
-                <Globe className="me-1 text-primary" width={25} />
-                <span className="align-middle">Listing</span>
+                {/* <Globe className="me-1 text-primary" width={25} /> */}
+                <span className="align-middle">Favourite Meal Management</span>
               </CardTitle>
               <div className="d-flex align-itmes-center mt-2 mt-md-0">
                 <div>
@@ -123,11 +147,12 @@ const Listing = () => {
                     color="primary"
                     size="sm"
                     onClick={() => {
+                      setAddEditModal(true)
                     }}
                     className="height-28"
                   >
                     <Plus size={15} />
-                    <span className="align-middle ms-50">Add New Listing</span>
+                    <span className="align-middle ms-50">Add New Menu</span>
                   </Button>
                 </div>
               </div>
@@ -146,6 +171,8 @@ const Listing = () => {
       </Row>
       <Row>
       </Row >
+
+    <AddEditModal open={addEditModal} stateChanger={setAddEditModal} />  
     </Fragment>
   );
 };
